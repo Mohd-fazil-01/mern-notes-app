@@ -4,13 +4,13 @@ import bcrypt from 'bcryptjs';
 
 // Cookie set karne ka naya function
 const generateTokenAndSetCookie = (res, id) => {
-  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
   res.cookie('jwt', token, {
     httpOnly: true, // XSS attacks se bachata hai (JS cannot access)
     secure: process.env.NODE_ENV === 'production', // Production me sirf HTTPS par chalega
     sameSite: 'strict', // CSRF attacks se bachata hai
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
 
