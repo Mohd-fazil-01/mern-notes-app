@@ -1,4 +1,4 @@
-import User from '../models/User.js';
+import User from '../Models/User.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -9,7 +9,7 @@ const generateTokenAndSetCookie = (res, id) => {
   res.cookie('jwt', token, {
     httpOnly: true, // XSS attacks se bachata hai (JS cannot access)
     secure: process.env.NODE_ENV === 'production', // Production me sirf HTTPS par chalega
-    sameSite: 'strict', // CSRF attacks se bachata hai
+    sameSite: 'lax', // CSRF attacks se bachata hai
     maxAge: 7 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
@@ -66,5 +66,49 @@ export const loginUser = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+export const getUserData = async (req, res) => {
+    try {
+       const userId = req.user.id;
+
+         const user = await User.findById(userId).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        });
+
+    } catch (error) {
+        console.error("Error fetching user data:", error.message);
+        res.status(500).json({ message: 'Server error while fetching user data' });
+    }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    // res.clearCookie seedha 'jwt' naam ki cookie ko delete kar dega
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Logged out successfully, cookie cleared!' 
+    });
+  } catch (error) {
+    console.error("Logout Error:", error.message);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error during logout' 
+    });
   }
 };
