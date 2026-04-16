@@ -13,7 +13,7 @@ const app = express();
 
 // 2. CORS update for Cookies (Frontend URL yahan aayega)
 app.use(cors({
-  origin: 'http://localhost:5173', // Exact frontend URL
+  origin: 'https://fazil-note-app3.netlify.app/', // Exact frontend URL
   credentials: true,               // Cookies ke liye zaroori
   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
