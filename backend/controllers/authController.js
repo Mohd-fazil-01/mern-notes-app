@@ -96,7 +96,7 @@ export const logoutUser = async (req, res) => {
     // res.clearCookie seedha 'jwt' naam ki cookie ko delete kar dega
     res.clearCookie('jwt', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'lax',
     });
 
