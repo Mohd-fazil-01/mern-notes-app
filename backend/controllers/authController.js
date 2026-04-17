@@ -8,8 +8,8 @@ const generateTokenAndSetCookie = (res, id) => {
 
   res.cookie('jwt', token, {
     httpOnly: true, // XSS attacks se bachata hai (JS cannot access)
-    secure: process.env.NODE_ENV === 'production', // Production me sirf HTTPS par chalega
-    sameSite: 'lax', // CSRF attacks se bachata hai
+    secure:true, // Production me sirf HTTPS par chalega
+    sameSite: 'none', // CSRF attacks se bachata hai
     maxAge: 7 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
