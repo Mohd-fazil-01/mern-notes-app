@@ -91,13 +91,14 @@ export const getUserData = async (req, res) => {
     }
 };
 
+
 export const logoutUser = async (req, res) => {
   try {
-    // res.clearCookie seedha 'jwt' naam ki cookie ko delete kar dega
+    // Cookie clear karte waqt vahi options dena zaroori hai jo set karte waqt diye the
     res.clearCookie('jwt', {
       httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
+      secure: true,      // Production mein hamesha true
+      sameSite: 'none',  // 'lax' ki jagah 'none' karo, warna cookie delete nahi hogi
     });
 
     res.status(200).json({ 
@@ -112,3 +113,24 @@ export const logoutUser = async (req, res) => {
     });
   }
 };
+// export const logoutUser = async (req, res) => {
+//   try {
+//     // res.clearCookie seedha 'jwt' naam ki cookie ko delete kar dega
+//     res.clearCookie('jwt', {
+//       httpOnly: true,
+//       secure: true,
+//       sameSite: 'lax',
+//     });
+
+//     res.status(200).json({ 
+//       success: true, 
+//       message: 'Logged out successfully, cookie cleared!' 
+//     });
+//   } catch (error) {
+//     console.error("Logout Error:", error.message);
+//     res.status(500).json({ 
+//       success: false, 
+//       message: 'Server error during logout' 
+//     });
+//   }
+// };
